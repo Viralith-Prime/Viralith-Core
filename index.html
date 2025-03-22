@@ -13,5 +13,16 @@
     <input id="userInput" type="text" placeholder="Enter command..." autofocus/>
   </div>
   <script src="script.js"></script>
+  <script>
+  const inputField = document.getElementById("userInput");
+  const outputBox = document.getElementById("response");
+
+  function sendInput() {
+    const input = inputField.value;
+    const response = Viralith.receiveInput(input);
+    outputBox.innerText = response;
+    inputField.value = "";
+  }
+</script>
 </body>
 </html>
