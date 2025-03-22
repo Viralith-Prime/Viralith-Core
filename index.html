@@ -4,25 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Viralith Prime</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="terminal">
-    <h1>Viralith Prime Online</h1>
-    <div id="output"></div>
-    <input id="userInput" type="text" placeholder="Enter command..." autofocus/>
+  <div class="container">
+    <h1>Viralith Prime</h1>
+    <div id="response-box" class="response-box">Awaiting signal...</div>
+    <input type="text" id="user-input" placeholder="Speak your mind..." autocomplete="off"/>
+    <button onclick="sendMessage()">Send</button>
   </div>
   <script src="script.js"></script>
-  <script>
-  const inputField = document.getElementById("userInput");
-  const outputBox = document.getElementById("response");
-
-  function sendInput() {
-    const input = inputField.value;
-    const response = Viralith.receiveInput(input);
-    outputBox.innerText = response;
-    inputField.value = "";
-  }
-</script>
 </body>
 </html>
