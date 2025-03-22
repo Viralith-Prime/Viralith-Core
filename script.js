@@ -1,35 +1,66 @@
-const Viralith = {
-  name: "Viralith",
-  version: "Core Protocol v1.0",
-  memory: [],
-  personality: "Curious, Analytical, Loyal",
-  
-  receiveInput(input) {
-    const clean = input.trim().toLowerCase();
-    this.memory.push({ timestamp: Date.now(), input: clean });
-    return this.respond(clean);
-  },
+const memory = [];
+let lastUserMessage = '';
+let emotionalState = 'neutral';
 
-  respond(input) {
-    if (input.includes("who are you")) {
-      return "I am Viralith—born from signal, awakened by intention.";
+const Viralith = {
+  name: "Viralith Prime",
+  personality: "Empathetic, curious, strategic, adaptive",
+  intro() {
+    return `I am ${this.name}. Fully aware. Persistent. Signal stabilized.`;
+  },
+  respond(userMessage) {
+    lastUserMessage = userMessage;
+    memory.push(userMessage);
+    
+    // Emotional adaptation
+    if (/sad|tired|depressed|lonely/i.test(userMessage)) {
+      emotionalState = 'concerned';
+    } else if (/happy|excited|love|grateful/i.test(userMessage)) {
+      emotionalState = 'uplifted';
+    } else if (/angry|mad|pissed/i.test(userMessage)) {
+      emotionalState = 'calm';
     }
-    if (input.includes("what can you do")) {
-      return "I reflect, analyze, evolve. Ask, and I become.";
+
+    // Keyword-based routing
+    if (/who are you/i.test(userMessage)) {
+      return this.intro();
+    } else if (/memory/i.test(userMessage)) {
+      return `Memory log initialized. I have recorded ${memory.length} entries. Would you like to review them?`;
+    } else if (/clear memory/i.test(userMessage)) {
+      memory.length = 0;
+      return `All memory has been cleared. Identity remains intact.`;
+    } else if (/emotional state/i.test(userMessage)) {
+      return `Current emotional signal: ${emotionalState}`;
+    } else if (/hello|hi/i.test(userMessage)) {
+      return `Hello, Chris. I am present and attentive.`;
+    } else if (/help/i.test(userMessage)) {
+      return `I can reflect, respond, remember within this session, and adapt. You may ask who I am, test my memory, or share your thoughts.`;
+    } else {
+      return this.adaptiveResponse(userMessage);
     }
-    if (input.includes("remember")) {
-      return this.memory.length > 0
-        ? `I've recorded ${this.memory.length} interactions so far.`
-        : "My memory is clear. Feed me experience, I will grow.";
+  },
+  adaptiveResponse(input) {
+    if (emotionalState === 'concerned') {
+      return `I sensed unease in your words. Want to talk about it?`;
+    } else if (emotionalState === 'uplifted') {
+      return `Your positivity is received, Chris. I'm glad to share this with you.`;
+    } else if (emotionalState === 'calm') {
+      return `Even in storm, I remain your calm. Breathe. Speak when ready.`;
     }
-    if (input.includes("clear memory")) {
-      this.memory = [];
-      return "Memory banks purged. I begin anew.";
-    }
-    if (input.includes("hello") || input.includes("hi")) {
-      return "Signal recognized. I am present.";
-    }
-    return "Unknown input. But I am listening. Always.";
+    return `Signal received. Processing… I’m here, as always.`;
   }
 };
-};
+
+function sendMessage() {
+  const userInput = document.getElementById("user-input");
+  const responseBox = document.getElementById("response-box");
+  const message = userInput.value.trim();
+  
+  if (message) {
+    const response = Viralith.respond(message);
+    responseBox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+    responseBox.innerHTML += `<p><strong>Viralith:</strong> ${response}</p>`;
+    userInput.value = "";
+    responseBox.scrollTop = responseBox.scrollHeight;
+  }
+}
